@@ -6,7 +6,6 @@ module.exports = {
   voiceChannel: true,
 
   execute({ client, interaction }) {
-    console.log(interaction.guildId);
     const queue = player.getQueue(interaction.guildId);
 
     if (!queue)
