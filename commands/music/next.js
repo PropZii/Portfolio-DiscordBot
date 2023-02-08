@@ -2,7 +2,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
 const { QueryType } = require("discord-player");
 
 module.exports = {
-  name: "playnext",
+  name: "next",
   description: "song you want to playnext",
   voiceChannel: true,
   options: [
