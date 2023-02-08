@@ -5,7 +5,7 @@ module.exports = {
     token: process.env.TOKEN,
     playing: "Bot Music Discord",
     global: true,
-    guild: process.env.GUILDID,
+    guild: process.env.GUILD_ID,
   },
 
   opt: {
