@@ -83,8 +83,7 @@ module.exports = (client, interaction) => {
         require.resolve(`../src/buttons/${file_of_button}.js`)
       ];
       const button = require(`../src/buttons/${file_of_button}.js`);
-      if (button)
-        return button({ client, inter: interaction, customId, queue });
+      if (button) return button({ client, interaction, customId, queue });
     }
   }
 };
