@@ -16,14 +16,26 @@ module.exports = {
 
   async execute({ interaction }) {
     const name = interaction.options.getString("name");
+    if (!name) return;
+
     //API
-    const profile = await axios.get(
-      "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" +
-        name +
-        "?api_key=" +
-        process.env.RIOT_KEY
-    );
-    const summonerId = profile.data.id;
+    const profile = await axios
+      .get(
+        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" +
+          name +
+          "?api_key=" +
+          process.env.RIOT_KEY
+      )
+      .catch((err) => {
+        return interaction.channel.send("This user doesnt exist");
+      });
+
+    if (profile) {
+      var summonerId = profile.data.id;
+    } else {
+      return interaction.channel.send("Try an other user name");
+    }
+
     const summoner = await axios.get(
       "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" +
         summonerId +
