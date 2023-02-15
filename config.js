@@ -3,7 +3,7 @@ require("dotenv").config();
 module.exports = {
   app: {
     token: process.env.TOKEN,
-    playing: "Bot Music Discord",
+    playing: "Bot Discord",
     global: true,
     guild: process.env.GUILD_ID,
   },

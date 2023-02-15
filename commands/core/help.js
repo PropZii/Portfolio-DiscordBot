@@ -1,34 +1,28 @@
-const { EmbedBuilder } = require("discord.js");
-
 module.exports = {
   name: "help",
-  description: "All the commands this bot has!",
-  showHelp: false,
-
-  execute({ client, interaction }) {
-    const commands = client.commands.filter((x) => x.showHelp !== false);
-
-    const embed = new EmbedBuilder()
-      .setColor("#ff0000")
-      .setAuthor({
-        name: client.user.username,
-        iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }),
-      })
-      .setDescription(
-        "This code comes from a GitHub project [ZerioDev/Music-bot](https://github.com/ZerioDev/Music-bot).\nThe use of this one is possible while keeping the credits for free.\nIf you want to remove the credits join the Discord support server."
-      )
-      .addFields([
-        {
-          name: `Enabled - ${commands.size}`,
-          value: commands.map((x) => `\`${x.name}\``).join(" | "),
-        },
-      ])
-      .setTimestamp()
-      .setFooter({
-        text: "Music comes first - Made with heart by Zerio ❤️",
-        iconURL: interaction.member.avatarURL({ dynamic: true }),
-      });
-
-    interaction.reply({ embeds: [embed] });
+  description: "help commands",
+  async execute({ interaction }) {
+    const prefix = "/";
+    interaction.reply(
+      `**${prefix}help**: List all commands
+    **${prefix}joke**: Tell a joke
+    **${prefix}portfolio**: Redirect to my portfolio page
+    **${prefix}profile**: Get data from a League of Legends user
+    **Music Commands**
+    **${prefix}play**: Play a song
+    **${prefix}back**: Go back to the previous song
+    **${prefix}clear**: Clear the queue
+    **${prefix}controller**: Show the music controller
+    **${prefix}loop**: Loop the queue or song
+    **${prefix}next**: Play the next song
+    **${prefix}nowplaying**: Show the currently playing song
+    **${prefix}pause**: Pause the music
+    **${prefix}queue**: Show the music queue
+    **${prefix}resume**: Resume the music
+    **${prefix}seek**: Seek to a specific time in the song
+    **${prefix}skip**: Skip the current song
+    **${prefix}stop**: Stop the music
+    **${prefix}volume**: Change the volume of the music`
+    );
   },
 };
