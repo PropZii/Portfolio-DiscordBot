@@ -19,6 +19,7 @@ module.exports = {
     if (!name) return;
 
     //API
+    let profileData = true;
     const profile = await axios
       .get(
         "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" +
@@ -27,21 +28,31 @@ module.exports = {
           process.env.RIOT_KEY
       )
       .catch((err) => {
-        return interaction.channel.send("This user doesnt exist");
+        return (
+          interaction.channel.send(
+            "Une erreur est survenue sûrement un problème lier à l'orthographe du pseudo"
+          ),
+          (profileData = false)
+        );
       });
 
-    if (profile) {
+    if (profileData) {
       var summonerId = profile.data.id;
-    } else {
-      return interaction.channel.send("Try an other user name");
     }
 
-    const summoner = await axios.get(
-      "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" +
-        summonerId +
-        "?api_key=" +
-        process.env.RIOT_KEY
-    );
+    let summoner;
+    if (profileData) {
+      summoner = await axios.get(
+        "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" +
+          summonerId +
+          "?api_key=" +
+          process.env.RIOT_KEY
+      );
+    } else {
+      return interaction.channel.send(
+        "Ce pseudo a été mal ecrit ou n'existe pas"
+      );
+    }
 
     //convert array into object
     function reducer(acc, curr) {
@@ -53,30 +64,36 @@ module.exports = {
     //Ranked or Unranked
     let summonerRank;
 
-    if (summonerData.data === undefined) {
-      summonerRank = "Unranked";
-    } else {
-      summonerRank = `${summonerData.data.tier} ${summonerData.data.rank} ${summonerData.data.leaguePoints}LP`;
-    }
+    try {
+      if (summonerData.data === undefined) {
+        summonerRank = "Unranked";
+      } else {
+        summonerRank = `${summonerData.data.tier} ${summonerData.data.rank} ${summonerData.data.leaguePoints}LP`;
+      }
+    } catch {}
 
     let summonerGames;
 
-    if (summonerData.data === undefined) {
-      summonerGames = "No games in ranked";
-    } else {
-      summonerGames = `${summonerData.data.wins + summonerData.data.losses}`;
-    }
+    try {
+      if (summonerData.data === undefined) {
+        summonerGames = "No games in ranked";
+      } else {
+        summonerGames = `${summonerData.data.wins + summonerData.data.losses}`;
+      }
+    } catch {}
 
     let summonerWinrate;
 
-    if (summonerData.data === undefined) {
-      summonerWinrate = "No games in ranked";
-    } else {
-      summonerWinrate = `${
-        summonerData.data.wins / summonerData.data.wins +
-        summonerData.data.losses
-      }%`;
-    }
+    try {
+      if (summonerData.data === undefined) {
+        summonerWinrate = "No games in ranked";
+      } else {
+        summonerWinrate = `${
+          summonerData.data.wins / summonerData.data.wins +
+          summonerData.data.losses
+        }%`;
+      }
+    } catch {}
 
     //Embed
     var embed = new EmbedBuilder()
